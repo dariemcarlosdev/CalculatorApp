@@ -29,16 +29,12 @@ namespace CalculatorApp.Helpers
 
                 if (string.IsNullOrEmpty(number))
                 {
-                    numberList.Add(0);
+                    numberList.Add(0); // Treat empty strings as 0
                 }
                 else if(!int.TryParse(number, out int result))
                 {
-                    if (number.Contains("-"))
-                    {
-                        negativeNumbers.Add(int.Parse(number)); //collect negative numbers
-                    }
                     
-                    numberList.Add(0);
+                    numberList.Add(0); // Treat invalid numbers as 0
                 }
                 else
                 {
@@ -46,14 +42,21 @@ namespace CalculatorApp.Helpers
                     {
                         negativeNumbers.Add(int.Parse(number)); //collect negative numbers
                     }
-                    numberList.Add(result);
+                    else if (result > 1000)
+                    {
+                        numberList.Add(0);  // Treat values greater than 1000 as 0
+                    }
+
+                    else
+
+                    numberList.Add(result); //add valid numbers to the list
                 }
 
             }
             //if negative numbers are found throw an exception
             if (negativeNumbers.Any())
             {
-                throw new Exception("Negatives not allowed: " + string.Join(",", negativeNumbers));
+                throw new Exception("Negatives not allowed: " + string.Join(",", negativeNumbers)); //throw exception with negative numbers if found
             }
 
             return numberList;

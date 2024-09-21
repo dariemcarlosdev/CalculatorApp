@@ -129,5 +129,20 @@ namespace CalculatorApp.Tests
             // Assert
             Assert.Throws<Exception>(act);
         }
+
+        //Unit test for Requirement# numbers greater than 1000 should be treated as 0
+        [Fact]
+        public void Addition_Of_Numbers_Greater_Than_1000_Should_Be_Treated_As_0_Returns_Correct_Result()
+        {
+            // Arrange
+            Calculator calculator = new Calculator(addition);
+            var numbers = "1001, 2";
+
+            // Act
+            var result = calculator.PerformOperation(numbers);
+
+            // Assert
+            Assert.Equal("0+2=2", result);
+        }   
     }
 }
