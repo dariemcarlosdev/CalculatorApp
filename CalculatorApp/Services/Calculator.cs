@@ -27,10 +27,11 @@ namespace CalculatorApp.Services
             try
             {
                 //throw an exception if the number list is empty or exceeds the limit of 2 numbers as max 2 numbers are allowed for the operation.
-                if (numberList.Count == 0 || numberList.Count > 2)
-                {
-                    throw new Exception("Invalid input, please enter max 2 numbers separated by commas");
-                }
+                //Removing this check will allow the operation to handle more than 2 numbers.
+                //if (numberList.Count == 0 || numberList.Count > 2)
+                //{
+                //    throw new Exception("Invalid input, please enter max 2 numbers separated by commas");
+                //}
 
                 //Calculate the result of the operation
                 var result = _operations.GetFormattedString(numberList);
