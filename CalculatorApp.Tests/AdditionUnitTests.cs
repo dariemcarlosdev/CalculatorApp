@@ -98,6 +98,21 @@ namespace CalculatorApp.Tests
 
             // Assert
             Assert.Equal("1+0=1", result);
-        }   
+        }
+
+        //Test for newline character as an alternative delimiter
+        [Fact]
+        public void Addition_Of_Newline_Character_As_An_Alternative_Delimiter_Returns_Correct_Result()
+        {
+            // Arrange
+            Calculator calculator = new Calculator(addition);
+            var numbers = "1\n2,3";
+
+            // Act
+            var result = calculator.PerformOperation(numbers);
+
+            // Assert
+            Assert.Equal("1+2+3=6", result);
+        }
     }
 }

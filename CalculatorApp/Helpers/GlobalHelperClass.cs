@@ -14,8 +14,13 @@ namespace CalculatorApp.Helpers
         {
             //Custom logic for parsing based on delimiter Handle commas
 
-            //Split the input string based on comma
+            //For adding Support a newline character as an alternative delimiter.I Replace newline characters with commas to treat them as alternative delimiters.
+            numbers = numbers.Replace("\n", ",");
+
+            //Split the input string based on comma.
+
             string[] numberArray = numbers.Split(',');
+            
             List<int> numberList = new List<int>();
             
             foreach (string number in numberArray) {
