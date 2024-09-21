@@ -147,11 +147,11 @@ namespace CalculatorApp.Tests
 
         //Unit test for Requirement#6 custom delimiter of a single character support using format: //{delimiter}\n{numbers}
 
-        ////this attribute is used to define multiple inputs for the test
         [Theory]
         [InlineData("//;\n1;2", "1+2=3")]//Inlinedata attribute is used to pass the input and expected output to the test method
         [InlineData("//#\n2#5", "2+5=7")]
         [InlineData("//.\n2.5", "2+5=7")]
+        [InlineData("//,\n2,ff,100", "2+0+100=102")] //Test for custom delimiter (,) and invalid number(ff) should be converted to 0
         public void Addition_Of_Custom_Delimiter_Support_Returns_Correct_Result(string numbers, string expectedResult)
         {
             // Arrange
@@ -162,9 +162,29 @@ namespace CalculatorApp.Tests
 
             // Assert
             Assert.Equal(expectedResult, result);
-        }  
+        }
 
-       
+        //Unit test for Requirment#7 custom delimiter of any length support using format: //[{delimiter}]\n{numbers}
+        [Theory]
+        [InlineData("//[***]\n1***2***3", "1+2+3=6")]
+        [InlineData("//[**]\n1**2**3", "1+2+3=6")]
+        [InlineData("//[%%]\n1%%2%%3", "1+2+3=6")]
+        [InlineData("//[##]\n1##2##3", "1+2+3=6")]
+        [InlineData("//[&&&]\n1&&&2&&&3", "1+2+3=6")]
+        [InlineData("//#\n2#5", "2+5=7")] //Test for Requirement#6 custom delimiter of a single character support
+        [InlineData("2,10001,6", "2+0+6=8")] //Test for Requirement#5 numbers greater than 1000 should be treated as 0
+        public void Addition_Of_Custom_Delimiter_Of_Any_Length_Support_Returns_Correct_Result(string numbers, string expectedResult)
+        {
+            // Arrange
+            Calculator calculator = new Calculator(addition);
+
+
+            // Act
+            var result = calculator.PerformOperation(numbers);
+
+            // Assert
+            Assert.Equal(expectedResult, result);
+        }
 
     }
 }
