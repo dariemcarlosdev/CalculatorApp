@@ -130,7 +130,7 @@ namespace CalculatorApp.Tests
             Assert.Throws<Exception>(act);
         }
 
-        //Unit test for Requirement# numbers greater than 1000 should be treated as 0
+        //Unit test for Requirement#5 numbers greater than 1000 should be treated as 0
         [Fact]
         public void Addition_Of_Numbers_Greater_Than_1000_Should_Be_Treated_As_0_Returns_Correct_Result()
         {
@@ -143,6 +143,28 @@ namespace CalculatorApp.Tests
 
             // Assert
             Assert.Equal("0+2=2", result);
-        }   
+        }
+
+        //Unit test for Requirement#6 custom delimiter of a single character support using format: //{delimiter}\n{numbers}
+
+        ////this attribute is used to define multiple inputs for the test
+        [Theory]
+        [InlineData("//;\n1;2", "1+2=3")]//Inlinedata attribute is used to pass the input and expected output to the test method
+        [InlineData("//#\n2#5", "2+5=7")]
+        [InlineData("//.\n2.5", "2+5=7")]
+        public void Addition_Of_Custom_Delimiter_Support_Returns_Correct_Result(string numbers, string expectedResult)
+        {
+            // Arrange
+            Calculator calculator = new Calculator(addition);
+
+            // Act
+            var result = calculator.PerformOperation(numbers);
+
+            // Assert
+            Assert.Equal(expectedResult, result);
+        }  
+
+       
+
     }
 }

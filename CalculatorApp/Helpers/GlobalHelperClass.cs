@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace CalculatorApp.Helpers
 {
@@ -12,35 +13,67 @@ namespace CalculatorApp.Helpers
         //this method are static so that they can be accessed without creating an instance of the class
         public static List<int> ParseInput(string numbers)
         {
-            //Custom logic for parsing based on delimiter Handle commas
+            /*
+            Requirement#6:Custom logic to support a custom delimiter in the specified format: ///{delimiter}\n{numbers}.
+            Explanation of Changes:
+            
+            1.Custom Delimiter Detection:
+            
+            - If the input starts with //, the custom delimiter is extracted (the character after //). The rest of the string after \n is treated as the numbers section.
+            
+            2.Delimiter Replacement:
+            
+            - Both commas and newlines are replaced with the custom delimiter so that the input can be parsed uniformly, regardless of how the user enters the numbers.
+            
+            3.Negative Numbers and Values Greater than 1000: 
+            
+            - Negative numbers are still collected and an exception is thrown if any are found.
+            - Numbers greater than 1000 are ignored(converted to 0).
+            */
 
-            //For adding Support a newline character as an alternative delimiter.I Replace newline characters with commas to treat them as alternative delimiters.
-            numbers = numbers.Replace("\n", ",");
+            string delimiter = ","; //default delimiter
+            string numbersSection = numbers;
 
-            //Split the input string based on comma.
-            string[] numberArray = numbers.Split(',');
+            //Check if the input string starts with a custom delimiter
+            if (numbers.StartsWith("//"))
+            {
+                //examine the input string to extract the custom delimiter and the numbers section
+                
+                
+                int delimiterEndIndex = numbers.IndexOf("\n"); // examine the input string to find the end of the delimiter, \n is the end of the delimiter
+                delimiter = numbers[2].ToString(); //Extract custom delimiter(single character)
+                //Extract the numbers string
+                numbersSection = numbers.Substring(delimiterEndIndex + 1); //extract the numbers section.Number section starts after the new line(\n) character.
+            }
+
+
+            //For adding Support a newline character as an alternative delimiter.I Replace newline characters with detected delimiter to treat them as alternative delimiters.
+            numbersSection = numbersSection.Replace("\n", delimiter);
+
+            // Split the numbers section using the detected delimiter
+            string[] numbersAsStringArray = numbersSection.Split(delimiter);
             
             
             List<int> numberList = new List<int>();
             var negativeNumbers = new List<int>(); //list to store negative numbers
 
             //parse the string to get the numbers and add them to the list
-            foreach (string number in numberArray) {
+            foreach (string numberAsString in numbersAsStringArray) {
 
-                if (string.IsNullOrEmpty(number))
+                if (string.IsNullOrEmpty(numberAsString))
                 {
                     numberList.Add(0); // Treat empty strings as 0
                 }
-                else if(!int.TryParse(number, out int result))
+                else if(!int.TryParse(numberAsString, out int result))
                 {
                     
                     numberList.Add(0); // Treat invalid numbers as 0
                 }
                 else
                 {
-                    if (number.Contains("-"))
+                    if (numberAsString.Contains("-"))
                     {
-                        negativeNumbers.Add(int.Parse(number)); //collect negative numbers
+                        negativeNumbers.Add(int.Parse(numberAsString)); //collect negative numbers
                     }
                     else if (result > 1000)
                     {
