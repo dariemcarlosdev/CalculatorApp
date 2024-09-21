@@ -1,0 +1,6 @@
+# .gitignore
+.vs/
+/CalculatorApp/obj/
+/CalculatorApp/bin/
+/CalculatorApp.Tests/obj/
+/CalculatorApp.Tests/bin/

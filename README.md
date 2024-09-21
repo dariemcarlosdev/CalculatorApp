@@ -1,0 +1,3 @@
+# CalculatorApp Overview
+
+This repository contains the source code and documentation for the Calculator App, which has been refactored to adhere to SOLID programming principles, design patterns, and object-oriented programming (OOP) fundamentals. The goal of this project is to demonstrate how these principles and patterns can be applied to improve the maintainability, scalability, and readability of a software application.
