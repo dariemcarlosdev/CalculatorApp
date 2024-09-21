@@ -71,19 +71,19 @@ namespace CalculatorApp.Tests
 
 
         //Test for negative numbers
-        [Fact]
-        public void Addition_Of_Negative_Numbers_Returns_Correct_Result()
-        {
-            // Arrange
-            Calculator calculator = new Calculator(addition);
-            var numbers = "-3, 4 ";
+        //[Fact]
+        //public void Addition_Of_Negative_Numbers_Returns_Correct_Result()
+        //{
+        //    // Arrange
+        //    Calculator calculator = new Calculator(addition);
+        //    var numbers = "-3, 4 ";
 
-            // Act
-            var result = calculator.PerformOperation(numbers);
+        //    // Act
+        //    var result = calculator.PerformOperation(numbers);
 
-            // Assert
-            Assert.Equal("-3+4=1", result);
-        }
+        //    // Assert
+        //    Assert.Equal("-3+4=1", result);
+        //}
 
         //Test for invalid number should be converted to 0
         [Fact]
@@ -100,7 +100,7 @@ namespace CalculatorApp.Tests
             Assert.Equal("1+0=1", result);
         }
 
-        //Test for newline character as an alternative delimiter
+        //Test for Requirement#3 newline character as an alternative delimiter
         [Fact]
         public void Addition_Of_Newline_Character_As_An_Alternative_Delimiter_Returns_Correct_Result()
         {
@@ -113,6 +113,21 @@ namespace CalculatorApp.Tests
 
             // Assert
             Assert.Equal("1+2+3=6", result);
+        }
+
+        //Test for Requirement#2 throwing an exception if the numbers are negative. Existing test Addition_Of_Negative_Numbers_Returns_Correct_Result can be commented out, since it is not valid anymore.
+        [Fact]
+        public void Addition_Of_Negative_Numbers_Should_Throw_Exception()
+        {
+            // Arrange
+            Calculator calculator = new Calculator(addition);
+            var numbers = "-1, -2, -3";
+
+            // Act
+            Action act = () => calculator.PerformOperation(numbers);
+
+            // Assert
+            Assert.Throws<Exception>(act);
         }
     }
 }
