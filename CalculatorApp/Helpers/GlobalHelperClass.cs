@@ -13,73 +13,61 @@ namespace CalculatorApp.Helpers
         //this method are static so that they can be accessed without creating an instance of the class
         public static List<int> ParseInput(string numbersAsStringInput)
         {
-   
 
-            string delimiter = ","; //default delimiter
-            string numbersAsStringSection = numbersAsStringInput;
+            /* Requirement#8:
+            New Changes added:
+            1. Allow the Add method to handle multiple delimiters.
+            Multiple Delimiters Detection:The method checks for multiple custom delimiters enclosed in square brackets ([ ]).
+            It uses a regular expression to extract all delimiters and adds them to the list.
 
 
-            /* Requirement#7:
-            
-            Custom logic to support a custom delimiter of any length in the specified format: //[{delimiter}]\n{numbers}.
+            2. Delimiter Replacement and Splitting:
+            The Split method uses all extracted delimiters to split the numbers section.
+            Both single and multiple custom delimiters are supported.
 
-            Explanation of Changes:
-            
-            1. Multi-Character Delimiter Detection:
-            - The method now checks if the input starts with //[ and includes ]\n to identify a custom delimiter of any length.
-            - The delimiter is extracted by slicing the string between //[ and ]\n.
-            
-            2. Handling Single Character Delimiter:
-            - The previous single-character delimiter handling remains for backward compatibility.
-            
-            3. String Split:
-            The Split method now uses the detected delimiter (whether single or multi-character) to split the numbers section.
+            3. Negative Numbers and Values Greater than 1000:
+            Negative numbers are collected, and an exception is thrown if any are found.
+            Numbers greater than 1000 are ignored (converted to 0).
              */
 
-            //Check if a custom delimiter of any length is provided and defined in the format //[{delimiter}]\n{numbers}
-            if (numbersAsStringInput.StartsWith("//[") && numbersAsStringInput.Contains("]\n"))
+            //to handle multiple delimiters, now I create a list of delimiters instead of a single delimiter.
+            //string delimiter = ","; //default delimiter
+            var delimiters = new List<string> { "," }; //default delimiters is a comma
+            string numbersAsStringSection = numbersAsStringInput;//default numbers section
+
+            // Check if a custom delimiter or multiple delimiters are defined using //[{delimiter}][{delimiter2}]\n format
+            if (numbersAsStringInput.StartsWith("//") && numbersAsStringInput.Contains("\n"))
             {
-                // Extract the custom delimiter
-                int delimiterEndIndex = numbersAsStringInput.IndexOf("]\n"); // examine the input string to find the end of the delimiter, ]\n is the end of the delimiter
-                delimiter = numbersAsStringInput.Substring(3, delimiterEndIndex - 3); //Extract custom delimiter
-                //Extract the numbers string
-                numbersAsStringSection = numbersAsStringInput.Substring(delimiterEndIndex + 2); //extract the numbers section.Number section starts after the new line(\n) character.
+                // Extract the custom delimiter(s) between // and \n
+                int delimiterEndIndex = numbersAsStringInput.IndexOf("\n"); // Find the end of the delimiter(s) section
+                string delimiterSection = numbersAsStringInput.Substring(2, delimiterEndIndex - 2); // Extract the delimiter(s) section
+                numbersAsStringSection = numbersAsStringInput.Substring(delimiterEndIndex + 1); // Extract the numbers section
+
+                // Check if we have multiple delimiters enclosed in square brackets
+                if (delimiterSection.StartsWith("[") && delimiterSection.EndsWith("]"))
+                {
+                    var delimiterMatches = System.Text.RegularExpressions.Regex.Matches(delimiterSection, @"\[(.*?)\]"); // Use regex to extract delimiters enclosed in square brackets
+                    foreach (var match in delimiterMatches)
+                    {
+                        
+                        delimiters.Add(match.ToString().Trim('[', ']')); // Add the extracted delimiters inside brackets to the list of delimiters to be used for splitting the numbers section
+                    }
+                }
+
+                else
+                {
+                    //if only a single delimiter is provided, add it to the list of delimiters, backward compatibility
+                    delimiters.Add(delimiterSection); // Add the single delimiter to the list of delimiters to be used for splitting the numbers section
+                }
+
             }
 
-            /* Requirement#6:
-            
-            Custom logic to support a custom single delimiter in the specified format: ///{delimiter}\n{numbers}.
-               
-            Explanation of Changes:
-            
-            1. Custom Delimiter Detection:
-            - If the input starts with //, the custom delimiter is extracted (the character after //). The rest of the string after \n is treated as the numbers section.
+            // Replace newline characters with a default comma delimiter to treat them as alternative delimiters
+            numbersAsStringSection = numbersAsStringSection.Replace("\n", ",");
 
-            2. Delimiter Replacement:
-            - Both commas and newlines are replaced with the custom delimiter so that the input can be parsed uniformly, regardless of how the user enters the numbers.
-
-            3. Negative Numbers and Values Greater than 1000: 
-            - Negative numbers are still collected and an exception is thrown if any are found.
-            - Numbers greater than 1000 are ignored(converted to 0).
-             */
-
-            //Check if the input string starts with a custom delimiter
-            else if (numbersAsStringInput.StartsWith("//"))
-            {
-                // Extract the single-character custom delimiter
-                int delimiterEndIndex = numbersAsStringInput.IndexOf("\n"); // examine the input string to find the end of the delimiter, \n is the end of the delimiter
-                delimiter = numbersAsStringInput[2].ToString(); //Extract custom delimiter(single character)
-                //Extract the numbers string
-                numbersAsStringSection = numbersAsStringInput.Substring(delimiterEndIndex + 1); //extract the numbers section.Number section starts after the new line(\n) character.
-            }
-
-
-            //For adding Support a newline character as an alternative delimiter.I Replace newline characters with detected delimiter to treat them as alternative delimiters.
-            numbersAsStringSection = numbersAsStringSection.Replace("\n", delimiter);
-
-            // Split the numbers section using the detected delimiter
-            string[] numbersAsStringArray = numbersAsStringSection.Split(delimiter);
-            
+            // Use the extracted delimiters (including multi-character ones) to split the numbers section
+            var numbersAsStringArray = numbersAsStringSection.Split(delimiters.ToArray(), StringSplitOptions.None); // Split the numbers section using the delimiters. StringSplitOptions.None is used to keep empty strings as entries, since they are treated as 0, acording to the requirements
+           
             
             List<int> numberList = new List<int>();
             var negativeNumbersList = new List<int>(); //list to store negative numbers
