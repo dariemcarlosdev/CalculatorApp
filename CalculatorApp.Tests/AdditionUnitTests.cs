@@ -6,7 +6,8 @@ namespace CalculatorApp.Tests
 {
     public class AdditionUnitTests
     {
-        Addition addition = new ();
+        //This insolation is achieved by creating a new instance of the AdditionStrategy class for each test method.
+        AdditionStrategy addition = new ();
 
         //Test for exceed of maximum number of input numbers of 2
         //[Fact]
@@ -28,7 +29,7 @@ namespace CalculatorApp.Tests
         public void Addition_Of_Allowing_More_Than_2_Numbers_Returns_Correct_Result()
         {
             // Arrange
-            Calculator calculator = new Calculator(addition);
+            CalculatorService calculator = new CalculatorService(addition);
             var numbers = "1,2,3";
 
             // Act
@@ -43,7 +44,7 @@ namespace CalculatorApp.Tests
         [Fact]
         public void Addition_Of_Two_Numbers_Returns_Correct_Result()
         {
-            Calculator calculator = new Calculator(addition);
+            CalculatorService calculator = new CalculatorService(addition);
             //arrange
             string input = "1,2";
 
@@ -59,7 +60,7 @@ namespace CalculatorApp.Tests
         public void Addition_Of_Empty_String_Should_Be_Converted_To_0_Returns_Correct_Result()
         {
             // Arrange
-            Calculator calculator = new Calculator(addition);
+            CalculatorService calculator = new CalculatorService(addition);
             var numbers = "1, ";
 
             // Act
@@ -90,7 +91,7 @@ namespace CalculatorApp.Tests
         public void Addition_Of_Invalid_Number_ShouldBe_ConvertedTo_0_Returns_Correct_Result()
         {
             // Arrange
-            Calculator calculator = new Calculator(addition);
+            CalculatorService calculator = new CalculatorService(addition);
             var numbers = "1,tytyt";
 
             // Act
@@ -105,7 +106,7 @@ namespace CalculatorApp.Tests
         public void Addition_Of_Newline_Character_As_An_Alternative_Delimiter_Returns_Correct_Result()
         {
             // Arrange
-            Calculator calculator = new Calculator(addition);
+            CalculatorService calculator = new CalculatorService(addition);
             var numbers = "1\n2,3";
 
             // Act
@@ -120,7 +121,7 @@ namespace CalculatorApp.Tests
         public void Addition_Of_Negative_Numbers_Should_Throw_Exception()
         {
             // Arrange
-            Calculator calculator = new Calculator(addition);
+            CalculatorService calculator = new CalculatorService(addition);
             var numbers = "-1, -2, -3";
 
             // Act
@@ -135,7 +136,7 @@ namespace CalculatorApp.Tests
         public void Addition_Of_Numbers_Greater_Than_1000_Should_Be_Treated_As_0_Returns_Correct_Result()
         {
             // Arrange
-            Calculator calculator = new Calculator(addition);
+            CalculatorService calculator = new CalculatorService(addition);
             var numbers = "1001, 2";
 
             // Act
@@ -154,7 +155,7 @@ namespace CalculatorApp.Tests
         public void Addition_Of_Custom_Delimiter_Support_Returns_Correct_Result(string numbers, string expectedResult)
         {
             // Arrange
-            Calculator calculator = new Calculator(addition);
+            CalculatorService calculator = new CalculatorService(addition);
 
             // Act
             var result = calculator.PerformOperation(numbers);
@@ -175,7 +176,7 @@ namespace CalculatorApp.Tests
         public void Addition_Of_Custom_Delimiter_Of_Any_Length_Support_Returns_Correct_Result(string numbers, string expectedResult)
         {
             // Arrange
-            Calculator calculator = new Calculator(addition);
+            CalculatorService calculator = new CalculatorService(addition);
 
 
             // Act
@@ -198,7 +199,7 @@ namespace CalculatorApp.Tests
         public void Addition_Of_Multiple_Custom_Delimiter_Of_Any_Length_Support_Returns_Correct_Result(string numbers, string expectedResult)
         {
             // Arrange
-            Calculator calculator = new Calculator(addition);
+            CalculatorService calculator = new CalculatorService(addition);
           
             // Act
             var result = calculator.PerformOperation(numbers);

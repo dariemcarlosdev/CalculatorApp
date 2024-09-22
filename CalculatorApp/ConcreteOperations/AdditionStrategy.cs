@@ -7,8 +7,9 @@ using CalculatorApp.Interfaces;
 
 namespace CalculatorApp.ConcreteOperations
 {
-    //Each class should have a single responsibility(SRP) and this class is responsible for addition operation. New operations can be added without modifying this class meet Open/Closed Principle. 
-    public class Addition : ICalculatorOperation
+    //Each class should have a single responsibility(SRP) and this class is responsible for addition operation. New operations can be added without modifying this class meet Open/Closed Principle.
+    //According to Strategy Pattern, this concrete strategy class implements the ICalculatorOperationStrategy interface to perform the addition operation.
+    public class AdditionStrategy : ICalculatorStrategy
     {
         public string OperatorSymbol => "+";
 

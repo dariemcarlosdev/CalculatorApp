@@ -10,14 +10,20 @@ namespace CalculatorApp.Services
     //This class is responsible for calculating the result of the operation, it uses the ICalculatorOperation interface to calculate the result and use DI to get the operation that can handle the input operation by depepending on abstraction (ICalculatorOperation) rather than concrete implementation.
     //I inject the operations that can handle the input operation using DI via contructor injection.
     //We can call this class as a Facade class as it hides the complexity of the operation and provides a simple interface to calculate the result.
-    public class Calculator
+    public class CalculatorService
     {
-        private readonly ICalculatorOperation _operations;
+        private ICalculatorStrategy _operations;
 
-        public Calculator(ICalculatorOperation calculatorOperations)
+        public CalculatorService(ICalculatorStrategy calculatorOperations)
         {
             _operations = calculatorOperations;
         }
+
+        public void SetOperatioStrategy(ICalculatorStrategy calculatorOperations)
+        {
+            _operations = calculatorOperations;
+        }
+
 
         public string PerformOperation(string numbers)
         {

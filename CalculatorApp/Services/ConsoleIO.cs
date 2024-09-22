@@ -12,13 +12,15 @@ namespace CalculatorApp.Services
     public class ConsoleIO
     {
         //This method is responsible for reading the input from the console
-        public string GetUserInput()
+        public (string input, string operation) GetUserInput()
         {
             //Read the input from the console
             Console.Write("Enter numbers separated by commas: ");
             string input = Console.ReadLine();
+            Console.Write("Select Operation(+,-,*,/) to perform : ");
+            string operation = Console.ReadLine();
 
-            return input;
+            return (input, operation);
 
 
         }

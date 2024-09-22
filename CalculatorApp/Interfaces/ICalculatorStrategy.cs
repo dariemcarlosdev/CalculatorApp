@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 namespace CalculatorApp.Interfaces
 {
     //This fallow ISP and OCP principles by having a single responsibility and being open for extension but closed for modification.
-    public interface ICalculatorOperation
+    //This interface is responsible for defining the contract for the operation strategy, declares the methods and properties that are common to all the operations. The context class uses this interface to perform the operation by concrete operation classes.
+    public interface ICalculatorStrategy
     {
         //add operator symbol used in the operation for adding to the formatted string
         string OperatorSymbol { get; }
