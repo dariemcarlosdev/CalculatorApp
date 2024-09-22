@@ -45,65 +45,24 @@ How it's applied: In this project, Dependency Injection is used extensively to m
 •	In the Program.cs file, a ServiceCollection is created to register all the services and their dependencies.
 •	Various strategies (AdditionStrategy, SubtractionStrategy, MultiplicationStrategy, DivisionStrategy) are registered as singletons. This means a single instance of each strategy will be created and shared throughout the application. In this case, I do not need to create instances by Request.
 
-  	var serviceCollection = new ServiceCollection()
-        .AddSingleton<AdditionStrategy>()
-        .AddSingleton<SubtractionStrategy>()
-        .AddSingleton<MultiplicationStrategy>()
-        .AddSingleton<DivisionStrategy>()
-        .AddSingleton<ICalculatorStrategy, AdditionStrategy>()
-        .AddSingleton<ICalculatorStrategy, SubtractionStrategy>()
-        .AddSingleton<ICalculatorStrategy, MultiplicationStrategy>()
-        .AddSingleton<ICalculatorStrategy, DivisionStrategy>()
-        .AddSingleton(provider => new Dictionary<string, ICalculatorStrategy>
-        {
-            { "+", provider.GetService<AdditionStrategy>() },
-            { "-", provider.GetService<SubtractionStrategy>() },
-            { "*", provider.GetService<MultiplicationStrategy>() },
-            { "/", provider.GetService<DivisionStrategy>() }
-        })
-        .AddSingleton<CalculatorContext>()
-        .AddSingleton<ConsoleIO>()
-        .BuildServiceProvider();
+![image](https://github.com/user-attachments/assets/4c4e1e38-7a0c-4e57-907a-ad2a81735fee)
+
   	
 2.	I used Dynamic Strategy Resolution:
 •	A dictionary is used to map operators to their corresponding strategies. This allows for dynamic resolution of strategies based on user input without hardcoding them in a switch statement.
 
-  	.AddSingleton(provider => new Dictionary<string, ICalculatorStrategy>
-  {
-      { "+", provider.GetService<AdditionStrategy>() },
-      { "-", provider.GetService<SubtractionStrategy>() },
-      { "*", provider.GetService<MultiplicationStrategy>() },
-      { "/", provider.GetService<DivisionStrategy>() }
-  })
+![image](https://github.com/user-attachments/assets/2a42f881-dc95-4298-afd1-6b49f0eac401)
+
 
 3.	Service Resolution:
    •	The ConsoleIO and CalculatorContext services are resolved from the service provider. If these services fail to initialize, appropriate error messages are displayed.
-    var io = serviceCollection.GetService<ConsoleIO>();
-    if (io == null)
-    {
-        Console.WriteLine("Failed to initialize ConsoleIO service.");
-        return;
-    }
 
-    var calculatorContext = serviceCollection.GetService<CalculatorContext>();
-    if (calculatorContext == null)
-    {
-        Console.WriteLine("Failed to initialize Calculator service.");
-        return;
-    }
+![image](https://github.com/user-attachments/assets/eaa86b89-40c5-46a1-96fe-d47d23ca62fa)
+
 4.	Setting the Operation Strategy:
 •	The CalculatorContext class uses the SetOperatioStrategy method to set the appropriate strategy based on user input. This strategy is then used to perform the calculation.
 
-  	 var strategies = serviceCollection.GetService<Dictionary<string, ICalculatorStrategy>>();
-   if (strategies.TryGetValue(operators, out var strategy))
-   {
-       calculatorContext.SetOperatioStrategy(strategy);
-   }
-   else
-   {
-       io.PrintError("Unknown operator. Please, enter a supported operator.");
-       continue;
-   }
+![image](https://github.com/user-attachments/assets/f044997a-c286-40fe-90f1-383aba4b176e)
 
 To sum it up, I used DI to manage the creation and resolution of various calculation strategies and other services. By registering these services with the ServiceCollection, the project achieves loose coupling, making it easier to maintain and extend. The use of a dictionary for dynamic strategy resolution further enhances the flexibility of the application.
 
