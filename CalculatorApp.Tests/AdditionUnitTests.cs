@@ -30,10 +30,12 @@ namespace CalculatorApp.Tests
         {
             // Arrange
             CalculatorService calculator = new CalculatorService(addition);
+            //replace the Calculator class with CalculatorContext class since the CalculatorContext class is used to manage the calculator context and provides a simple interface to manage the context according to the SRP principle and strategy pattern.
+            CalculatorContext calculatorContext = new(addition);
             var numbers = "1,2,3";
 
             // Act
-            var result = calculator.PerformOperation(numbers);
+            var result = calculatorContext.PerformOperation(numbers);
 
             // Assert
             Assert.Equal("1+2+3=6", result);
@@ -44,12 +46,14 @@ namespace CalculatorApp.Tests
         [Fact]
         public void Addition_Of_Two_Numbers_Returns_Correct_Result()
         {
-            CalculatorService calculator = new CalculatorService(addition);
+
             //arrange
+            //CalculatorService calculator = new CalculatorService(addition);
+            CalculatorContext calculatorContext = new(addition);
             string input = "1,2";
 
             //act
-            var result = calculator.PerformOperation(input);
+            var result = calculatorContext.PerformOperation(input);
 
             //Assert
             Assert.Equal("1+2=3", result);
@@ -60,11 +64,12 @@ namespace CalculatorApp.Tests
         public void Addition_Of_Empty_String_Should_Be_Converted_To_0_Returns_Correct_Result()
         {
             // Arrange
-            CalculatorService calculator = new CalculatorService(addition);
+            //CalculatorService calculator = new CalculatorService(addition);
+            CalculatorContext calculatorContext = new(addition);
             var numbers = "1, ";
 
             // Act
-            var result = calculator.PerformOperation(numbers);
+            var result = calculatorContext.PerformOperation(numbers);
 
             // Assert
             Assert.Equal("1+0=1", result);
@@ -91,11 +96,12 @@ namespace CalculatorApp.Tests
         public void Addition_Of_Invalid_Number_ShouldBe_ConvertedTo_0_Returns_Correct_Result()
         {
             // Arrange
-            CalculatorService calculator = new CalculatorService(addition);
+            //CalculatorService calculator = new CalculatorService(addition);
+            CalculatorContext calculatorContext = new(addition);
             var numbers = "1,tytyt";
 
             // Act
-            var result = calculator.PerformOperation(numbers);
+            var result = calculatorContext.PerformOperation(numbers);
 
             // Assert
             Assert.Equal("1+0=1", result);
@@ -106,11 +112,12 @@ namespace CalculatorApp.Tests
         public void Addition_Of_Newline_Character_As_An_Alternative_Delimiter_Returns_Correct_Result()
         {
             // Arrange
-            CalculatorService calculator = new CalculatorService(addition);
+            //CalculatorService calculator = new CalculatorService(addition);
+            CalculatorContext calculatorContext = new(addition);
             var numbers = "1\n2,3";
 
             // Act
-            var result = calculator.PerformOperation(numbers);
+            var result = calculatorContext.PerformOperation(numbers);
 
             // Assert
             Assert.Equal("1+2+3=6", result);
@@ -122,10 +129,11 @@ namespace CalculatorApp.Tests
         {
             // Arrange
             CalculatorService calculator = new CalculatorService(addition);
+            CalculatorContext calculatorContext = new(addition);
             var numbers = "-1, -2, -3";
 
             // Act
-            Action act = () => calculator.PerformOperation(numbers);
+            Action act = () => calculatorContext.PerformOperation(numbers);
 
             // Assert
             Assert.Throws<Exception>(act);
@@ -137,10 +145,11 @@ namespace CalculatorApp.Tests
         {
             // Arrange
             CalculatorService calculator = new CalculatorService(addition);
+            CalculatorContext calculatorContext = new(addition);
             var numbers = "1001, 2";
 
             // Act
-            var result = calculator.PerformOperation(numbers);
+            var result = calculatorContext.PerformOperation(numbers);
 
             // Assert
             Assert.Equal("0+2=2", result);
@@ -155,10 +164,12 @@ namespace CalculatorApp.Tests
         public void Addition_Of_Custom_Delimiter_Support_Returns_Correct_Result(string numbers, string expectedResult)
         {
             // Arrange
-            CalculatorService calculator = new CalculatorService(addition);
+            //CalculatorService calculator = new CalculatorService(addition);
+            CalculatorContext calculatorContext = new(addition);
+
 
             // Act
-            var result = calculator.PerformOperation(numbers);
+            var result = calculatorContext.PerformOperation(numbers);
 
             // Assert
             Assert.Equal(expectedResult, result);
@@ -176,11 +187,11 @@ namespace CalculatorApp.Tests
         public void Addition_Of_Custom_Delimiter_Of_Any_Length_Support_Returns_Correct_Result(string numbers, string expectedResult)
         {
             // Arrange
-            CalculatorService calculator = new CalculatorService(addition);
-
+            //CalculatorService calculator = new CalculatorService(addition);
+            CalculatorContext calculatorContext = new(addition);
 
             // Act
-            var result = calculator.PerformOperation(numbers);
+            var result = calculatorContext.PerformOperation(numbers);
 
             // Assert
             Assert.Equal(expectedResult, result);
@@ -199,10 +210,11 @@ namespace CalculatorApp.Tests
         public void Addition_Of_Multiple_Custom_Delimiter_Of_Any_Length_Support_Returns_Correct_Result(string numbers, string expectedResult)
         {
             // Arrange
-            CalculatorService calculator = new CalculatorService(addition);
-          
+            //CalculatorService calculator = new CalculatorService(addition);
+            CalculatorContext calculatorContext = new(addition);
+
             // Act
-            var result = calculator.PerformOperation(numbers);
+            var result = calculatorContext.PerformOperation(numbers);
 
             // Assert
             Assert.Equal(expectedResult, result);

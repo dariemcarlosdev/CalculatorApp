@@ -9,7 +9,7 @@ namespace CalculatorApp.Services
 {
     //This class is responsible for managing the calculator context, it can be called as a Facade class as it hides the complexity of the context management and provides a simple interface to manage the context.
     //Provides a simple interface to manage the context, which is going to be used by the CalculatorService class to perform the operation.
-    internal class CalculatorContext
+    public class CalculatorContext
     {
         //The Context has a reference to one of the Strategy objects and delegates the operation to the strategy object.
         //The Context is responsible for managing the strategy object that is going to be used by the client.
